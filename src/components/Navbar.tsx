@@ -42,12 +42,15 @@ export default function Navbar() {
           </Link>
         </div>
 
-        <div
+        <button
           className={`nav-toggle${menuOpen ? ' active' : ''}`}
           onClick={() => setMenuOpen(!menuOpen)}
+          aria-expanded={menuOpen}
+          aria-controls="navLinks"
+          aria-label="Toggle mobile menu"
         >
           <span /><span /><span />
-        </div>
+        </button>
       </div>
     </nav>
   );

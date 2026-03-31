@@ -1,17 +1,9 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import ScrollReveal from '@/components/ScrollReveal';
 
 export default function ContactPage() {
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
-
   return (
     <>
       <div className="page-header">
@@ -47,48 +39,6 @@ export default function ContactPage() {
                     <div className="contact-detail-text"><h4>Owner</h4><p>Al Soto</p></div>
                   </div>
                 </div>
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal>
-              <div className="contact-form">
-                {!submitted ? (
-                  <>
-                    <h3>Send Us a Message</h3>
-                    <form onSubmit={handleSubmit}>
-                      <div className="form-row">
-                        <div className="form-group"><label htmlFor="firstName">First Name</label><input type="text" id="firstName" placeholder="John" required /></div>
-                        <div className="form-group"><label htmlFor="lastName">Last Name</label><input type="text" id="lastName" placeholder="Doe" required /></div>
-                      </div>
-                      <div className="form-row">
-                        <div className="form-group"><label htmlFor="email">Email</label><input type="email" id="email" placeholder="john@example.com" required /></div>
-                        <div className="form-group"><label htmlFor="phone">Phone</label><input type="tel" id="phone" placeholder="(555) 123-4567" /></div>
-                      </div>
-                      <div className="form-group">
-                        <label htmlFor="service">Service Interested In</label>
-                        <select id="service">
-                          <option value="">Select a service...</option>
-                          <option value="kitchen">Kitchen Remodeling</option>
-                          <option value="bathroom">Bathroom Renovation</option>
-                          <option value="addition">Room Addition</option>
-                          <option value="interior">Interior Remodeling</option>
-                          <option value="exterior">Exterior Renovation</option>
-                          <option value="commercial">Commercial Construction</option>
-                          <option value="fire">Fire Damage Restoration</option>
-                          <option value="other">Other</option>
-                        </select>
-                      </div>
-                      <div className="form-group"><label htmlFor="message">Tell Us About Your Project</label><textarea id="message" placeholder="Describe your project, goals, timeline..." rows={5} required /></div>
-                      <button type="submit" className="btn btn-red">Send Message</button>
-                    </form>
-                  </>
-                ) : (
-                  <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="1.5" style={{ marginBottom: 14 }}><circle cx="12" cy="12" r="10" /><polyline points="8 12 11 15 16 9" /></svg>
-                    <h3 style={{ marginBottom: 6 }}>Message Sent!</h3>
-                    <p style={{ color: 'var(--medium-gray)' }}>Thank you for reaching out. Al Soto will get back to you as soon as possible.</p>
-                  </div>
-                )}
               </div>
             </ScrollReveal>
           </div>

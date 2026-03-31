@@ -95,7 +95,7 @@ export default function HomePage() {
             </ScrollReveal>
             <ScrollReveal>
               <div style={{ position: 'relative' }}>
-                <ImageGallery images={aboutGalleryImages} alts={aboutGalleryImages.map((_, i) => `Interior project ${i + 1}`)} />
+                <ImageGallery images={aboutGalleryImages} alts={aboutGalleryImages.map((_, i) => `Elegant Remodeling interior living space project ${i + 1}`)} />
                 <div className="about-badge">
                   <div className="stat-number">25+</div>
                   <p>Years of Excellence</p>
