@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "export",
+  // Removed output: "export" as it conflicts with OpenNext Cloudflare deployment
 };
 
 export default nextConfig;
