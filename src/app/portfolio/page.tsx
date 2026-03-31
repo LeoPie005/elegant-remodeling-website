@@ -36,10 +36,24 @@ const categories = [
 const searchIcon = <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>;
 
 export default function PortfolioPage() {
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [activeFilter, setActiveFilter] = useState<string>('all');
   const [lightbox, setLightbox] = useState<{ images: string[]; index: number } | null>(null);
 
-  const toggle = (id: string) => setActiveCategory((prev) => (prev === id ? null : id));
+  // Flatten all images into one array mapped to their category for easy filtering
+  const allImages = categories.flatMap(cat => 
+    cat.images.map(imgSrc => ({
+      src: imgSrc,
+      category: cat.id,
+      alt: `${cat.title} Project`,
+    }))
+  );
+
+  const filteredImages = activeFilter === 'all' 
+    ? allImages 
+    : allImages.filter(img => img.category === activeFilter);
+
+  // Extract just the valid string URLs for the Lightbox component
+  const currentLightboxUrls = filteredImages.map(img => img.src);
 
   return (
     <>
@@ -61,36 +75,47 @@ export default function PortfolioPage() {
             </div>
           </ScrollReveal>
 
-          <div className="portfolio-categories">
+          <div className="portfolio-filters">
+            <button 
+              className={`filter-btn ${activeFilter === 'all' ? 'active' : ''}`}
+              onClick={() => setActiveFilter('all')}
+            >
+              All Projects
+            </button>
             {categories.map((cat) => (
-              <ScrollReveal key={cat.id}>
-                <div className={`portfolio-category${activeCategory === cat.id ? ' active' : ''}`}>
-                  <div className="portfolio-category-header" onClick={() => toggle(cat.id)}>
-                    <div className="portfolio-category-header-left">
-                      <div className="portfolio-category-icon"><svg viewBox="0 0 24 24">{cat.icon}</svg></div>
-                      <div><h3>{cat.title}</h3><span className="meta">{cat.count}</span></div>
-                    </div>
-                    <div className="portfolio-toggle"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9" /></svg></div>
-                  </div>
-                  <div className="portfolio-gallery">
-                    <div className="portfolio-gallery-inner">
-                      {cat.images.length > 0 ? cat.images.map((img, i) => (
-                        <div key={img} className="gallery-item" onClick={() => setLightbox({ images: cat.images, index: i })}>
-                          <img src={img} alt={`${cat.title} ${i + 1}`} loading="lazy" />
-                          <div className="overlay">{searchIcon}</div>
-                        </div>
-                      )) : (
-                        <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '36px 0', color: 'var(--medium-gray)' }}>
-                          <p style={{ fontSize: '0.95rem', fontWeight: 500 }}>Addition photos coming soon!</p>
-                          <p style={{ fontSize: '0.85rem', marginTop: 4 }}>Contact us to learn about our addition projects.</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </ScrollReveal>
+              cat.images.length > 0 && (
+                <button
+                  key={cat.id}
+                  className={`filter-btn ${activeFilter === cat.id ? 'active' : ''}`}
+                  onClick={() => setActiveFilter(cat.id)}
+                >
+                  {cat.title}
+                </button>
+              )
             ))}
           </div>
+
+          <ScrollReveal>
+            <div className="portfolio-gallery-open">
+              {filteredImages.map((img, index) => (
+                <div 
+                  key={img.src} 
+                  className="gallery-item" 
+                  onClick={() => setLightbox({ images: currentLightboxUrls, index: index })}
+                >
+                  <img src={img.src} alt={img.alt} loading="lazy" />
+                  <div className="overlay">{searchIcon}</div>
+                </div>
+              ))}
+            </div>
+            
+            {activeFilter === 'additions' || (activeFilter !== 'all' && filteredImages.length === 0) ? (
+              <div className="empty-state">
+                <p style={{ fontSize: '1.05rem', fontWeight: 600 }}>Photos coming soon!</p>
+                <p style={{ fontSize: '0.9rem', marginTop: 4 }}>Contact us to learn about our projects in this category.</p>
+              </div>
+            ) : null}
+          </ScrollReveal>
         </div>
       </section>
 
